@@ -2,7 +2,6 @@ package main
 
 import (
 	"crypto/rand"
-	"fmt"
 	"os"
 )
 
@@ -20,15 +19,14 @@ func main() {
 
 	if cipher == "AES" {
 		key := make([]byte, 32) //256 bit key for Rijndael
+
+		rand.Read(key)
+		os.WriteFile(keypath+"/key.txt", []byte(key), 0777)
 	} else {
 		key := make([]byte, 16) //128 bit keysize for Blowfish and Feistel
-	}
+		rand.Read(key)
+		os.WriteFile(keypath+"/key.txt", []byte(key), 0777)
 
-	_, err := rand.Read(key) //create 16 bytes or 256 bits long key for use with AES cipher
-	if err != nil {
-		fmt.Println("There seems to be a problem, try again")
 	}
-
-	err = os.WriteFile(keypath+"/key.txt", []byte(key), 0777)
 
 }
